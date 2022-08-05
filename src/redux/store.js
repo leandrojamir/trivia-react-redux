@@ -4,7 +4,8 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 const store = createStore(
-  composeWithDevTools(applyMiddleware(thunk), rootReducer),
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 if (window.Cypress) {
