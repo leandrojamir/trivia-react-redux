@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const player = (state = initialState, action) => {
-  switch (action.type) {
+  switch (action) {
   default:
     return state;
   }
