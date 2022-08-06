@@ -4,6 +4,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
 import Game from './pages/Game';
+import Feedback from './pages/Feedback';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route exact path="/" render={ () => <Login /> } />
         <Route path="/settings" render={ () => <Settings /> } />
         <Route patch="/game" render={ () => <Game /> } />
+        <Route patch="/feedback" render={ () => <Feedback /> } />
       </Switch>
     </div>
 
