@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
+const tres = 3;
+
 function Feedback({ headerDetail }) {
   return (
     <header>
@@ -21,6 +23,12 @@ function Feedback({ headerDetail }) {
       >
         {`Score: ${headerDetail.score}pts`}
       </p>
+      {headerDetail.assertions < tres && (
+        <p data-testid="feedback-text">Could be better...</p>
+      )}
+      {headerDetail.assertions >= tres && (
+        <p data-testid="feedback-text">Well Done!</p>
+      )}
     </header>
   );
 }
