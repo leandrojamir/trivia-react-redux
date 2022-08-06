@@ -10,6 +10,7 @@ export default function App() {
   return (
     <div>
       <Link to="/">Login</Link>
+      <Link to="/feedback">feedback</Link>
       <Switch>
         <Route exact path="/" render={ () => <Login /> } />
         <Route path="/settings" render={ () => <Settings /> } />
@@ -17,6 +18,5 @@ export default function App() {
         <Route patch="/feedback" render={ () => <Feedback /> } />
       </Switch>
     </div>
-
   );
 }
