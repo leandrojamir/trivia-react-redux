@@ -1,12 +1,20 @@
+import { NAMEGRAVATAR } from '../actions';
+
 const initialState = {
-  name: '',
-  assertions: '',
-  score: '',
+  name: 'Nome',
+  assertions: 0,
+  score: 0,
   gravatarEmail: '',
 };
 
 const player = (state = initialState, action) => {
-  switch (action) {
+  switch (action.type) {
+  case NAMEGRAVATAR:
+    return {
+      ...state,
+      name: action.name,
+      gravatarEmail: action.gravatarEmail,
+    };
   default:
     return state;
   }

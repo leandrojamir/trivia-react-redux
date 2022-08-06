@@ -1,4 +1,7 @@
+import md5 from 'crypto-js/md5';
+
 export const TOKEN = 'TOKEN';
+export const NAMEGRAVATAR = 'nameGravatar';
 
 const requestToken = (payload) => ({
   type: TOKEN,
@@ -13,4 +16,8 @@ export const fetchToken = () => async (dispatch) => {
   localStorage.setItem('token', data.token);
 };
 
-// fetchToken();
+export const saveNameGravatar = (payload) => ({
+  type: NAMEGRAVATAR,
+  name: payload.name,
+  gravatarEmail: md5(payload.email).toString(),
+});
