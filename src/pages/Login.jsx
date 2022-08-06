@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchToken } from '../redux/actions';
+import { fetchToken, saveNameGravatar } from '../redux/actions';
 
 const emailValidation = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
 const num = 3;
 
 function Login(props) {
-  const { disptachFetchToken, redirect } = props;
+  const { disptachFetchToken, redirect, saveName } = props;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [btn, setBtn] = useState({ name: false, email: false });
@@ -43,6 +43,7 @@ function Login(props) {
         disabled={ !(btn.name && btn.email) }
         onClick={ () => {
           disptachFetchToken();
+          saveName({ name, email });
         } }
       >
         Play
@@ -63,6 +64,7 @@ function Login(props) {
 Login.propTypes = {
   disptachFetchToken: PropTypes.func,
   redirect: PropTypes.bool,
+  saveName: PropTypes.func,
 }.isRequired;
 
 const mapStateToProps = ({ token }) => ({
@@ -71,6 +73,7 @@ const mapStateToProps = ({ token }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   disptachFetchToken: () => dispatch(fetchToken()),
+  saveName: (data) => dispatch(saveNameGravatar(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
