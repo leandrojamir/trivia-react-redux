@@ -19,9 +19,14 @@ function Feedback({ headerDetail }) {
         {headerDetail.name}
       </h5>
       <p
-        data-testid="header-score"
+        data-testid="feedback-total-score"
       >
-        {`Score: ${headerDetail.score}pts`}
+        {Number(headerDetail.score)}
+      </p>
+      <p
+        data-testid="feedback-total-question"
+      >
+        {Number(headerDetail.assertions)}
       </p>
       {headerDetail.assertions < tres && (
         <p data-testid="feedback-text">Could be better...</p>
