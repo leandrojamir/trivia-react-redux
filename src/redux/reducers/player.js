@@ -1,4 +1,4 @@
-import { NAMEGRAVATAR } from '../actions';
+import { ASSERTIONS, NAMEGRAVATAR } from '../actions';
 
 const initialState = {
   name: 'Nome',
@@ -14,6 +14,11 @@ const player = (state = initialState, action) => {
       ...state,
       name: action.name,
       gravatarEmail: action.gravatarEmail,
+    };
+  case ASSERTIONS:
+    return {
+      ...state,
+      assertions: state.assertions + 1,
     };
   default:
     return state;
