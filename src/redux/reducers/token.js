@@ -1,4 +1,4 @@
-import { TOKEN } from '../actions';
+import { TOKEN, LOGOUT } from '../actions';
 
 const initialState = {
   token: '',
@@ -12,6 +12,11 @@ const token = (state = initialState, action) => {
       ...state,
       token: action.payload,
       redirect: true,
+    };
+  case LOGOUT:
+    return {
+      ...state,
+      redirect: false,
     };
   default:
     return state;
