@@ -8,6 +8,7 @@ const initialState = {
   timer: 30,
 };
 
+const dez = 10;
 const player = (state = initialState, action) => {
   switch (action.type) {
   case NAMEGRAVATAR:
@@ -26,7 +27,7 @@ const player = (state = initialState, action) => {
   case SCORE:
     return {
       ...state,
-      score: state.score + action.payload,
+      score: state.score + (dez + (state.timer * action.payload)),
     };
 
   case TIMER:

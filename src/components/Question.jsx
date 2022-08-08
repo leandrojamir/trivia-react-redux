@@ -12,40 +12,26 @@ const level = {
   medium: 2,
   easy: 1,
 };
-const minPoints = 10;
-const time = 30;
 
 function Question({ item, assertion, dispatchScore, timer0 }) {
   const [color, setColor] = useState(false);
-  const [scoreAmount, setScoreAmount] = useState(0);
   const [sort, setSort] = useState(true);
-  
   console.log(item);
   function handleClick() {
     if (item.difficulty === 'easy') {
-      setScoreAmount(Number(minPoints + time * level.easy));
+      dispatchScore(level.easy);
     }
     if (item.difficulty === 'medium') {
-      setScoreAmount(Number(minPoints + time * level.medium));
+      dispatchScore(level.medium);
     }
     if (item.difficulty === 'hard') {
-      setScoreAmount(Number(minPoints + time * level.hard));
+      dispatchScore(level.hard);
     }
   }
 
   useEffect(() => {
-    dispatchScore(scoreAmount);
     setColor(timer0);
-  }, [scoreAmount, dispatchScore, timer0]);
-  
-    if (sort) {
-    buttons.btn4 = buttons.btn4.sort(() => Math.random() - num);
-    buttons.btn2 = buttons.btn2.sort(() => Math.random() - num);
-    console.log(item);
-    console.log(buttons);
-    setSort(false);
-  }
-  console.log(buttons);
+  }, [timer0]);
 
   const buttons = {
     btn4: [
@@ -119,7 +105,9 @@ function Question({ item, assertion, dispatchScore, timer0 }) {
         disabled={ timer0 }
         onClick={ () => {
           setColor(true);
+          setColor(true);
           assertion();
+          handleClick();
         } }
       >
         {item.correct_answer}
@@ -140,7 +128,13 @@ function Question({ item, assertion, dispatchScore, timer0 }) {
       </button>,
     ],
   };
-
+  if (sort) {
+    buttons.btn4 = buttons.btn4.sort(() => Math.random() - num);
+    buttons.btn2 = buttons.btn2.sort(() => Math.random() - num);
+    console.log(item);
+    console.log(buttons);
+    setSort(false);
+  }
   return (
     <div>
       <Timer />
