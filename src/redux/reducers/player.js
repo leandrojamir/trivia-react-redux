@@ -1,4 +1,4 @@
-import { ASSERTIONS, NAMEGRAVATAR } from '../actions';
+import { ASSERTIONS, NAMEGRAVATAR, SCORE } from '../actions';
 
 const initialState = {
   name: 'Nome',
@@ -19,6 +19,11 @@ const player = (state = initialState, action) => {
     return {
       ...state,
       assertions: state.assertions + 1,
+    };
+  case SCORE:
+    return {
+      ...state,
+      score: state.score + action.payload,
     };
   default:
     return state;

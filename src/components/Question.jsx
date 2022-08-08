@@ -1,14 +1,38 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { assertions } from '../redux/actions';
+import { assertions, score } from '../redux/actions';
 
 const num = 0.5;
+const level = {
+  hard: 3,
+  medium: 2,
+  easy: 1,
+};
+const minPoints = 10;
+const time = 30;
 
 const red = '3px solid red';
 
-function Question({ item, assertion }) {
+function Question({ item, assertion, dispatchScore }) {
   const [color, setColor] = useState(false);
+  const [scoreAmount, setScoreAmount] = useState(0);
+  console.log(item);
+  function handleClick() {
+    if (item.difficulty === 'easy') {
+      setScoreAmount(Number(minPoints + time * level.easy));
+    }
+    if (item.difficulty === 'medium') {
+      setScoreAmount(Number(minPoints + time * level.medium));
+    }
+    if (item.difficulty === 'hard') {
+      setScoreAmount(Number(minPoints + time * level.hard));
+    }
+  }
+
+  useEffect(() => {
+    dispatchScore(scoreAmount);
+  }, [scoreAmount, dispatchScore]);
 
   const button4 = [
     <button
@@ -21,6 +45,7 @@ function Question({ item, assertion }) {
       onClick={ () => {
         setColor(true);
         assertion();
+        handleClick();
       } }
     >
       {item.correct_answer}
@@ -112,6 +137,7 @@ function Question({ item, assertion }) {
 
 Question.propTypes = {
   assertion: PropTypes.func.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
   item: PropTypes.shape({
     category: PropTypes.string,
     correct_answer: PropTypes.string,
@@ -122,8 +148,9 @@ Question.propTypes = {
   }).isRequired,
 };
 
-const mapDispatchToProps = (dispatc) => ({
-  assertion: () => dispatc(assertions()),
+const mapDispatchToProps = (dispatch) => ({
+  assertion: () => dispatch(assertions()),
+  dispatchScore: (data) => dispatch(score(data)),
 });
 
 export default connect(null, mapDispatchToProps)(Question);

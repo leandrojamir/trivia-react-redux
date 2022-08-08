@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 function HeaderGame(props) {
   const { headerDetail } = props;
+
   return (
     <header>
       <img
