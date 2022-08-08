@@ -1,15 +1,51 @@
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { assertions } from '../redux/actions';
+import { assertions, score } from '../redux/actions';
 import Timer from './Timer';
 
 const num = 0.5;
 const red = '3px solid red';
 
-function Question({ item, assertion, timer0 }) {
+const level = {
+  hard: 3,
+  medium: 2,
+  easy: 1,
+};
+const minPoints = 10;
+const time = 30;
+
+function Question({ item, assertion, dispatchScore, timer0 }) {
   const [color, setColor] = useState(false);
+  const [scoreAmount, setScoreAmount] = useState(0);
   const [sort, setSort] = useState(true);
+  
+  console.log(item);
+  function handleClick() {
+    if (item.difficulty === 'easy') {
+      setScoreAmount(Number(minPoints + time * level.easy));
+    }
+    if (item.difficulty === 'medium') {
+      setScoreAmount(Number(minPoints + time * level.medium));
+    }
+    if (item.difficulty === 'hard') {
+      setScoreAmount(Number(minPoints + time * level.hard));
+    }
+  }
+
+  useEffect(() => {
+    dispatchScore(scoreAmount);
+    setColor(timer0);
+  }, [scoreAmount, dispatchScore, timer0]);
+  
+    if (sort) {
+    buttons.btn4 = buttons.btn4.sort(() => Math.random() - num);
+    buttons.btn2 = buttons.btn2.sort(() => Math.random() - num);
+    console.log(item);
+    console.log(buttons);
+    setSort(false);
+  }
+  console.log(buttons);
 
   const buttons = {
     btn4: [
@@ -24,6 +60,7 @@ function Question({ item, assertion, timer0 }) {
         onClick={ () => {
           setColor(true);
           assertion();
+          handleClick();
         } }
       >
         {item.correct_answer}
@@ -104,18 +141,6 @@ function Question({ item, assertion, timer0 }) {
     ],
   };
 
-  useEffect(() => {
-    setColor(timer0);
-  }, [timer0]);
-
-  if (sort) {
-    buttons.btn4 = buttons.btn4.sort(() => Math.random() - num);
-    buttons.btn2 = buttons.btn2.sort(() => Math.random() - num);
-    console.log(item);
-    console.log(buttons);
-    setSort(false);
-  }
-  console.log(buttons);
   return (
     <div>
       <Timer />
@@ -132,6 +157,7 @@ function Question({ item, assertion, timer0 }) {
 
 Question.propTypes = {
   assertion: PropTypes.func.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
   item: PropTypes.shape({
     category: PropTypes.string,
     correct_answer: PropTypes.string,
@@ -143,12 +169,13 @@ Question.propTypes = {
   timer0: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  timer0: state.player.timer === 0,
+const mapDispatchToProps = (dispatch) => ({
+  assertion: () => dispatch(assertions()),
+  dispatchScore: (data) => dispatch(score(data)),
 });
 
-const mapDispatchToProps = (dispatc) => ({
-  assertion: () => dispatc(assertions()),
+const mapStateToProps = (state) => ({
+  timer0: state.player.timer === 0,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

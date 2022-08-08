@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import HeaderGame from '../components/HeaderGame';
 import Question from '../components/Question';
+
 import { fetchQuestion, logout } from '../redux/actions';
 
 const tres = 3;
