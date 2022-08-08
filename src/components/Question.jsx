@@ -1,16 +1,27 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { assertions } from '../redux/actions';
 
 const num = 0.5;
 
-function Question({ item }) {
-  console.log(item);
+const red = '3px solid red';
+
+function Question({ item, assertion }) {
+  const [color, setColor] = useState(false);
 
   const button4 = [
     <button
       key="1"
       data-testid="correct-answer"
       type="button"
+      style={ {
+        border: color ? '3px solid rgb(6, 240, 15)' : '',
+      } }
+      onClick={ () => {
+        setColor(true);
+        assertion();
+      } }
     >
       {item.correct_answer}
     </button>,
@@ -18,6 +29,12 @@ function Question({ item }) {
       key="2"
       data-testid="wrong-answer-0"
       type="button"
+      style={ {
+        border: color ? red : '',
+      } }
+      onClick={ () => {
+        setColor(true);
+      } }
     >
       {item.incorrect_answers[0]}
     </button>,
@@ -25,6 +42,12 @@ function Question({ item }) {
       key="3"
       data-testid="wrong-answer-1"
       type="button"
+      style={ {
+        border: color ? red : '',
+      } }
+      onClick={ () => {
+        setColor(true);
+      } }
     >
       {item.incorrect_answers[1]}
     </button>,
@@ -32,6 +55,12 @@ function Question({ item }) {
       key="4"
       data-testid="wrong-answer-2"
       type="button"
+      style={ {
+        border: color ? red : '',
+      } }
+      onClick={ () => {
+        setColor(true);
+      } }
     >
       {item.incorrect_answers[2]}
     </button>,
@@ -42,6 +71,13 @@ function Question({ item }) {
       key="1"
       data-testid="correct-answer"
       type="button"
+      style={ {
+        border: color ? '3px solid rgb(6, 240, 15)' : '',
+      } }
+      onClick={ () => {
+        setColor(true);
+        assertion();
+      } }
     >
       {item.correct_answer}
     </button>,
@@ -49,6 +85,12 @@ function Question({ item }) {
       key="2"
       data-testid="wrong-answer-0"
       type="button"
+      style={ {
+        border: color ? red : '',
+      } }
+      onClick={ () => {
+        setColor(true);
+      } }
     >
       {item.incorrect_answers[0]}
     </button>,
@@ -69,6 +111,7 @@ function Question({ item }) {
 }
 
 Question.propTypes = {
+  assertion: PropTypes.func.isRequired,
   item: PropTypes.shape({
     category: PropTypes.string,
     correct_answer: PropTypes.string,
@@ -79,4 +122,8 @@ Question.propTypes = {
   }).isRequired,
 };
 
-export default Question;
+const mapDispatchToProps = (dispatc) => ({
+  assertion: () => dispatc(assertions()),
+});
+
+export default connect(null, mapDispatchToProps)(Question);

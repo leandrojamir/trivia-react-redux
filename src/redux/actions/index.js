@@ -4,6 +4,7 @@ export const TOKEN = 'TOKEN';
 export const LOGOUT = 'logout';
 export const NAMEGRAVATAR = 'nameGravatar';
 export const QUESTION = 'question';
+export const ASSERTIONS = 'assertions';
 
 const requestToken = (payload) => ({
   type: TOKEN,
@@ -39,4 +40,9 @@ export const saveNameGravatar = (payload) => ({
   type: NAMEGRAVATAR,
   name: payload.name,
   gravatarEmail: md5(payload.email).toString(),
+});
+
+export const assertions = (payload) => ({
+  type: ASSERTIONS,
+  payload,
 });
