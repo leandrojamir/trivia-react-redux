@@ -18,7 +18,7 @@ function Timer({ getTime }) {
       setTime(timeleft.time);
       getTime(timeleft.time);
     }, mil);
-  }, []);
+  }, [getTime]);
   return (
     <div>{time}</div>
   );
