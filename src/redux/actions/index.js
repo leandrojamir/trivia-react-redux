@@ -5,6 +5,7 @@ export const LOGOUT = 'logout';
 export const NAMEGRAVATAR = 'nameGravatar';
 export const QUESTION = 'question';
 export const ASSERTIONS = 'assertions';
+export const TIMER = 'timer';
 
 const requestToken = (payload) => ({
   type: TOKEN,
@@ -44,5 +45,10 @@ export const saveNameGravatar = (payload) => ({
 
 export const assertions = (payload) => ({
   type: ASSERTIONS,
+  payload,
+});
+
+export const timer = (payload) => ({
+  type: TIMER,
   payload,
 });
