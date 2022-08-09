@@ -4,8 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../redux/actions';
 
-const tres = 3;
-
 function Feedback({ headerDetail, login }) {
   const [redirectLogin, setRedirectLogin] = useState(false);
   const history = useHistory();
@@ -14,6 +12,8 @@ function Feedback({ headerDetail, login }) {
     login();
     setRedirectLogin(true);
   }
+const tres = 3;
+
   return (
     <header>
       { redirectLogin && history.push('/') }
@@ -63,7 +63,6 @@ function Feedback({ headerDetail, login }) {
         } }
       >
         Ranking
-
       </button>
     </header>
   );
