@@ -12,7 +12,7 @@ function Feedback({ headerDetail, login }) {
     login();
     setRedirectLogin(true);
   }
-const tres = 3;
+  const tres = 3;
 
   return (
     <header>
