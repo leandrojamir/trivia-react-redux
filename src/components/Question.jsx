@@ -2,148 +2,71 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { assertions, score } from '../redux/actions';
-import Timer from './Timer';
 
-const num = 0.5;
-const red = '3px solid red';
+const trinta = 30;
+const mil = 1000;
+const timeleft = { time: 30 };
 
-const level = {
-  hard: 3,
-  medium: 2,
-  easy: 1,
-};
-
-function Question({ item, assertion, dispatchScore, timer0, setNext }) {
+function Question({ item, assertion, dispatchScore, setNext, options }) {
   const [color, setColor] = useState(false);
-  const [sort, setSort] = useState(true);
-  function handleClick() {
-    if (item.difficulty === 'easy') {
-      dispatchScore(level.easy);
-    }
-    if (item.difficulty === 'medium') {
-      dispatchScore(level.medium);
-    }
-    if (item.difficulty === 'hard') {
-      dispatchScore(level.hard);
+  const [time, setTime] = useState(trinta);
+  const [disabledOp, setDisbledOp] = useState(false);
+
+  function handleClick(correct) {
+    if (correct) {
+      dispatchScore(item.difficulty, time);
+      assertion();
     }
   }
-
-  if (color) setNext(true);
 
   useEffect(() => {
-    setColor(timer0);
-  }, [timer0]);
+    const interval = setInterval(() => {
+      timeleft.time -= 1;
+      setTime(timeleft.time);
+      if (timeleft.time === 0) {
+        clearInterval(interval);
+        timeleft.time = 30;
+      }
+    }, mil);
+  }, []);
 
-  const buttons = {
-    btn4: [
-      <button
-        key="1"
-        data-testid="correct-answer"
-        type="button"
-        style={ {
-          border: color ? '3px solid rgb(6, 240, 15)' : '',
-        } }
-        disabled={ timer0 }
-        onClick={ () => {
-          setColor(true);
-          assertion();
-          handleClick();
-        } }
-      >
-        {item.correct_answer}
-      </button>,
-      <button
-        key="2"
-        data-testid="wrong-answer-0"
-        type="button"
-        style={ {
-          border: color ? red : '',
-        } }
-        disabled={ timer0 }
-        onClick={ () => {
-          setColor(true);
-        } }
-      >
-        {item.incorrect_answers[0]}
-      </button>,
-      <button
-        key="3"
-        data-testid="wrong-answer-1"
-        type="button"
-        style={ {
-          border: color ? red : '',
-        } }
-        disabled={ timer0 }
-        onClick={ () => {
-          setColor(true);
-        } }
-      >
-        {item.incorrect_answers[1]}
-      </button>,
-      <button
-        key="4"
-        data-testid="wrong-answer-2"
-        type="button"
-        style={ {
-          border: color ? red : '',
-        } }
-        disabled={ timer0 }
-        onClick={ () => {
-          setColor(true);
-        } }
-      >
-        {item.incorrect_answers[2]}
-      </button>,
-    ],
-    btn2: [
-      <button
-        key="1"
-        data-testid="correct-answer"
-        type="button"
-        style={ {
-          border: color ? '3px solid rgb(6, 240, 15)' : '',
-        } }
-        disabled={ timer0 }
-        onClick={ () => {
-          setColor(true);
-          setColor(true);
-          assertion();
-          handleClick();
-        } }
-      >
-        {item.correct_answer}
-      </button>,
-      <button
-        key="2"
-        data-testid="wrong-answer-0"
-        type="button"
-        style={ {
-          border: color ? red : '',
-        } }
-        disabled={ timer0 }
-        onClick={ () => {
-          setColor(true);
-        } }
-      >
-        {item.incorrect_answers[0]}
-      </button>,
-    ],
-  };
-  // console.log(buttons);
-  if (sort) {
-    buttons.btn4 = buttons.btn4.sort(() => Math.random() - num);
-    buttons.btn2 = buttons.btn2.sort(() => Math.random() - num);
-    setSort(false);
-  }
+  // if (color) {
+  //   setNext(true);
+  // } else { setNext(false); }
+  console.log(item);
+  useEffect(() => {
+    if (time === 0) {
+      setColor(true);
+      setNext(true);
+      setDisbledOp(true);
+    }
+  }, [time, setNext, setDisbledOp]);
+
   return (
     <div>
-      <Timer />
+      <div>{time}</div>
       <p data-testid="question-category">{item.category}</p>
       <p data-testid="question-text">{item.question}</p>
       <section data-testid="answer-options">
-        {item.type === 'multiple'
-          ? buttons.btn4.sort(() => Math.random() - num)
-          : buttons.btn2.sort(() => Math.random() - num) }
+        {options.map((it, i) => (
+          <button
+            type="button"
+            key={ i }
+            data-testid={ it.dataTest }
+            style={ {
+              border: color ? `${it.style}` : '',
+            } }
+            disabled={ disabledOp }
+            onClick={ () => {
+              setColor(true);
+              setDisbledOp(true);
+              setNext(true);
+              handleClick(it.correct);
+            } }
+          >
+            {it.title}
+          </button>
+        ))}
       </section>
     </div>
   );
@@ -161,12 +84,17 @@ Question.propTypes = {
     question: PropTypes.string,
     type: PropTypes.string,
   }).isRequired,
-  timer0: PropTypes.bool.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    dataTest: PropTypes.string,
+    id: PropTypes.number,
+    style: PropTypes.string,
+    title: PropTypes.string,
+  })).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   assertion: () => dispatch(assertions()),
-  dispatchScore: (data) => dispatch(score(data)),
+  dispatchScore: (data, time) => dispatch(score(data, time)),
 });
 
 const mapStateToProps = (state) => ({

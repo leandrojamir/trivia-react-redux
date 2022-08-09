@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import HeaderGame from '../components/HeaderGame';
 import Question from '../components/Question';
 
@@ -9,11 +9,13 @@ import { fetchQuestion, logout, timer } from '../redux/actions';
 
 const tres = 3;
 const trinta = 30;
-const cinco = 4;
+const quatro = 4;
+const num = 0.5;
 
 function Game({ getQuestions, tokenApi, questions, loginRedirect, getimer }) {
   const [index, setIndex] = useState(0);
   const [btnNext, setBtnNext] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     getQuestions(tokenApi);
@@ -21,18 +23,36 @@ function Game({ getQuestions, tokenApi, questions, loginRedirect, getimer }) {
 
   const logoutLogin = () => {
     loginRedirect();
-    return (<Redirect to="/" />);
+    history.push('/');
   };
-  console.log(questions);
+
+  const sortOptions = (i) => {
+    const quention = questions.results[i];
+    const optC = {
+      title: quention.correct_answer,
+      style: '3px solid rgb(6, 240, 15)',
+      dataTest: 'correct-answer',
+      correct: true,
+    };
+    const optE = quention.incorrect_answers.map((item, idx) => ({
+      id: idx,
+      title: item,
+      style: '3px solid red',
+      dataTest: `wrong-answer-${idx}`,
+      correct: false,
+    }));
+    return [optC, ...optE].sort(() => Math.random() - num);
+  };
   return (
     <div>
-      {index > cinco && <Redirect to="/feed" />}
+      {index > quatro && history.push('/feed')}
       {questions.response_code === tres && logoutLogin()}
       <HeaderGame />
       {questions.results && questions.results.map((item, i) => (
         <Question
           key={ i }
           item={ item }
+          options={ sortOptions(i) }
           setNext={ (value) => setBtnNext(value) }
         />))[index]}
       { btnNext && (
@@ -42,6 +62,7 @@ function Game({ getQuestions, tokenApi, questions, loginRedirect, getimer }) {
           onClick={ () => {
             setIndex(index + 1);
             getimer();
+            setBtnNext(false);
           } }
         >
           Next

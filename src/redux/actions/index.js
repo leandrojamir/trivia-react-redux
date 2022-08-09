@@ -49,10 +49,30 @@ export const assertions = (payload) => ({
   payload,
 });
 
-export const score = (payload) => ({
-  type: SCORE,
-  payload,
-});
+const level = {
+  hard: 3,
+  medium: 2,
+  easy: 1,
+};
+
+export const score = (payload, time) => {
+  if (payload === 'easy') {
+    return {
+      type: SCORE,
+      payload: level.easy * time,
+    };
+  }
+  if (payload === 'medium') {
+    return {
+      type: SCORE,
+      payload: level.medium * time,
+    };
+  }
+  return {
+    type: SCORE,
+    payload: level.hard * time,
+  };
+};
 
 export const timer = (payload) => ({
   type: TIMER,

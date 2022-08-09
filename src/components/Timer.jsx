@@ -24,6 +24,7 @@ function Timer({ getTime, getTimer }) {
   if (timeleft.time === 0) {
     timeleft.time = getTimer;
   }
+
   return (
     <div>{time}</div>
   );

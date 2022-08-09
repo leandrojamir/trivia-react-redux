@@ -27,7 +27,7 @@ const player = (state = initialState, action) => {
   case SCORE:
     return {
       ...state,
-      score: state.score + (dez + (state.timer * action.payload)),
+      score: state.score + (dez + action.payload),
     };
 
   case TIMER:

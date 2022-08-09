@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchToken, saveNameGravatar } from '../redux/actions';
@@ -13,6 +13,13 @@ function Login(props) {
   const [email, setEmail] = useState('');
   const [btn, setBtn] = useState({ name: false, email: false });
   const [settings, setSettings] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', () => { });
+    return () => {
+      window.removeEventListener('mousemove', () => { });
+    };
+  }, []);
   return (
     <div>
       {settings && <Redirect to="/settings" />}
