@@ -16,6 +16,7 @@ const token = (state = initialState, action) => {
   case LOGOUT:
     return {
       ...state,
+      token: '',
       redirect: false,
     };
   default:

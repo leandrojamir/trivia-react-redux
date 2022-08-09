@@ -2,17 +2,25 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../redux/actions';
+import { clearPlayes, logout } from '../redux/actions';
 
-function Feedback({ headerDetail, login }) {
+const tres = 3;
+function Feedback({ headerDetail, login, token, clearPlayer }) {
   const [redirectLogin, setRedirectLogin] = useState(false);
   const history = useHistory();
 
-  function handleClickPlayAgain() {
-    login();
-    setRedirectLogin(true);
+  function savePlayer() {
+    const getLocal = JSON.parse(localStorage.getItem('Players'));
+    const player = {
+      name: headerDetail.name,
+      score: headerDetail.score,
+      gravatar: headerDetail.gravatarEmail,
+      token: token.token,
+    };
+    const arrPlayes = [...(getLocal || []), player];
+    localStorage.setItem('Players', JSON.stringify(arrPlayes));
+    clearPlayer();
   }
-  const tres = 3;
 
   return (
     <header>
@@ -51,7 +59,11 @@ function Feedback({ headerDetail, login }) {
       <button
         type="button"
         data-testid="btn-play-again"
-        onClick={ handleClickPlayAgain }
+        onClick={ () => {
+          savePlayer();
+          login();
+          setRedirectLogin(true);
+        } }
       >
         Play Again
       </button>
@@ -59,6 +71,8 @@ function Feedback({ headerDetail, login }) {
         data-testid="btn-ranking"
         type="button"
         onClick={ () => {
+          savePlayer();
+          login();
           history.push('/ranking');
         } }
       >
@@ -80,10 +94,12 @@ Feedback.propTypes = {
 
 const mapStateToProps = (state) => ({
   headerDetail: state.player,
+  token: state.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   login: () => dispatch(logout()),
+  clearPlayer: () => dispatch(clearPlayes()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

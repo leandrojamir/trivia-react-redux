@@ -1,4 +1,4 @@
-import { ASSERTIONS, NAMEGRAVATAR, SCORE, TIMER } from '../actions';
+import { ASSERTIONS, NAMEGRAVATAR, SCORE, TIMER, CLEARPLAYER } from '../actions';
 
 const initialState = {
   name: 'Nome',
@@ -34,6 +34,16 @@ const player = (state = initialState, action) => {
     return {
       ...state,
       timer: action.payload,
+    };
+
+  case CLEARPLAYER:
+    return {
+      ...state,
+      name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '',
+      timer: 30,
     };
 
   default:
