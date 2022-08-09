@@ -7,6 +7,7 @@ export const QUESTION = 'question';
 export const ASSERTIONS = 'assertions';
 export const SCORE = 'score';
 export const TIMER = 'timer';
+export const CLEARPLAYER = 'clearPlayes';
 
 const requestToken = (payload) => ({
   type: TOKEN,
@@ -77,4 +78,8 @@ export const score = (payload, time) => {
 export const timer = (payload) => ({
   type: TIMER,
   payload,
+});
+
+export const clearPlayes = () => ({
+  type: CLEARPLAYER,
 });
