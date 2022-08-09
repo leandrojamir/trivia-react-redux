@@ -11,13 +11,14 @@ function Ranking({ logoutLigin }) {
 
   useEffect(() => {
     const getLocal = JSON.parse(localStorage.getItem('Players'));
-    getLocal.sort((a, b) => {
-      if (b.score < a.score) return menosUm;
-      if (b.score > a.score) return 1;
-      return 0;
-    });
-    setPlayers(getLocal);
-    console.log(getLocal);
+    if (getLocal) {
+      getLocal.sort((a, b) => {
+        if (b.score < a.score) return menosUm;
+        if (b.score > a.score) return 1;
+        return 0;
+      });
+      setPlayers(getLocal);
+    }
   }, []);
 
   return (
@@ -33,7 +34,7 @@ function Ranking({ logoutLigin }) {
       >
         Play Again
       </button>
-      {players.map((item, index) => (
+      {players.length > 0 && players.map((item, index) => (
         <section key={ index }>
           <img
             data-testid="header-profile-picture"
