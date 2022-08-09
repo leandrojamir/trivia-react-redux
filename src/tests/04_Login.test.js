@@ -4,8 +4,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from '../pages/Login';
 
-import { MemoryRouter } from 'react-router-dom';
-
 describe('1. Desenvolva testes para atingir 90% de cobertura da tela de Login', () => {
   it('Testa se o input de nome e e-mail são renderizados', () => {
     renderWithRouterAndRedux(<Login />);
