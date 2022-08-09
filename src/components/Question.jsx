@@ -13,10 +13,9 @@ const level = {
   easy: 1,
 };
 
-function Question({ item, assertion, dispatchScore, timer0 }) {
+function Question({ item, assertion, dispatchScore, timer0, setNext }) {
   const [color, setColor] = useState(false);
   const [sort, setSort] = useState(true);
-  console.log(item);
   function handleClick() {
     if (item.difficulty === 'easy') {
       dispatchScore(level.easy);
@@ -28,6 +27,8 @@ function Question({ item, assertion, dispatchScore, timer0 }) {
       dispatchScore(level.hard);
     }
   }
+
+  if (color) setNext(true);
 
   useEffect(() => {
     setColor(timer0);
@@ -128,11 +129,10 @@ function Question({ item, assertion, dispatchScore, timer0 }) {
       </button>,
     ],
   };
+  // console.log(buttons);
   if (sort) {
     buttons.btn4 = buttons.btn4.sort(() => Math.random() - num);
     buttons.btn2 = buttons.btn2.sort(() => Math.random() - num);
-    console.log(item);
-    console.log(buttons);
     setSort(false);
   }
   return (
@@ -142,14 +142,15 @@ function Question({ item, assertion, dispatchScore, timer0 }) {
       <p data-testid="question-text">{item.question}</p>
       <section data-testid="answer-options">
         {item.type === 'multiple'
-          ? buttons.btn4
-          : buttons.btn2}
+          ? buttons.btn4.sort(() => Math.random() - num)
+          : buttons.btn2.sort(() => Math.random() - num) }
       </section>
     </div>
   );
 }
 
 Question.propTypes = {
+  setNext: PropTypes.func.isRequired,
   assertion: PropTypes.func.isRequired,
   dispatchScore: PropTypes.func.isRequired,
   item: PropTypes.shape({

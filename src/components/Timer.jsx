@@ -5,24 +5,25 @@ import { timer } from '../redux/actions';
 
 const trinta = 30;
 const mil = 1000;
-const timeleft = { time: trinta };
+const timeleft = { time: 30 };
 
-function Timer({ getTime }) {
+function Timer({ getTime, getTimer }) {
   const [time, setTime] = useState(trinta);
+  // timeleft.time = getTimer;
   useEffect(() => {
     const interval = setInterval(() => {
-      if (timeleft.time === 0) {
-        clearInterval(interval);
-        timeleft.time = 31;
-      }
       timeleft.time -= 1;
       setTime(timeleft.time);
       getTime(timeleft.time);
-      if (timeleft.time === trinta) {
-        getTime(0);
+      if (timeleft.time === 0) {
+        clearInterval(interval);
+        timeleft.time = 30;
       }
     }, mil);
   }, [getTime]);
+  if (timeleft.time === 0) {
+    timeleft.time = getTimer;
+  }
   return (
     <div>{time}</div>
   );
@@ -30,10 +31,15 @@ function Timer({ getTime }) {
 
 Timer.propTypes = {
   getTime: PropTypes.func.isRequired,
+  getTimer: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getTime: (data) => dispatch(timer(data)),
 });
 
-export default connect(null, mapDispatchToProps)(Timer);
+const mapStateToProps = (state) => ({
+  getTimer: state.player.timer,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

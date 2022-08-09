@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 const tres = 3;
 
-function Feedback({ headerDetail }) {
+function Feed({ headerDetail }) {
   return (
     <header>
       <img
@@ -38,7 +38,7 @@ function Feedback({ headerDetail }) {
   );
 }
 
-Feedback.propTypes = {
+Feed.propTypes = {
   headerDetail: PropTypes.shape({
     name: PropTypes.string,
     assertions: PropTypes.number,
@@ -51,4 +51,4 @@ const mapStateToProps = (state) => ({
   headerDetail: state.player,
 });
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps)(Feed);
