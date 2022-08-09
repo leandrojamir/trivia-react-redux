@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 const tres = 3;
 
-function Feed({ headerDetail }) {
+function Feedback({ headerDetail }) {
   return (
     <header>
       <img
@@ -19,9 +19,9 @@ function Feed({ headerDetail }) {
         {headerDetail.name}
       </h5>
       <p
-        data-testid="feedback-total-score"
+        data-testid="header-score"
       >
-        {Number(headerDetail.score)}
+        {headerDetail.score}
       </p>
       <p
         data-testid="feedback-total-question"
@@ -38,7 +38,7 @@ function Feed({ headerDetail }) {
   );
 }
 
-Feed.propTypes = {
+Feedback.propTypes = {
   headerDetail: PropTypes.shape({
     name: PropTypes.string,
     assertions: PropTypes.number,
@@ -51,4 +51,4 @@ const mapStateToProps = (state) => ({
   headerDetail: state.player,
 });
 
-export default connect(mapStateToProps)(Feed);
+export default connect(mapStateToProps)(Feedback);

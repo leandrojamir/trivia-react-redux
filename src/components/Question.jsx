@@ -30,10 +30,6 @@ function Question({ item, assertion, dispatchScore, setNext, options }) {
     }, mil);
   }, []);
 
-  // if (color) {
-  //   setNext(true);
-  // } else { setNext(false); }
-  console.log(item);
   useEffect(() => {
     if (time === 0) {
       setColor(true);

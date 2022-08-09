@@ -45,7 +45,7 @@ function Game({ getQuestions, tokenApi, questions, loginRedirect, getimer }) {
   };
   return (
     <div>
-      {index > quatro && history.push('/feed')}
+      {index > quatro && history.push('/feedback')}
       {questions.response_code === tres && logoutLogin()}
       <HeaderGame />
       {questions.results && questions.results.map((item, i) => (
