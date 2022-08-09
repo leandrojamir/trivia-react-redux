@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -55,6 +54,16 @@ function Feedback({ headerDetail, login }) {
         onClick={ handleClickPlayAgain }
       >
         Play Again
+      </button>
+      <button
+        data-testid="btn-ranking"
+        type="button"
+        onClick={ () => {
+          history.push('/ranking');
+        } }
+      >
+        Ranking
+
       </button>
     </header>
   );
