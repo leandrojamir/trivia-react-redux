@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const tres = 3;
 
 function Feedback({ headerDetail }) {
+  const history = useHistory();
   return (
     <header>
       <img
@@ -34,6 +36,15 @@ function Feedback({ headerDetail }) {
       {headerDetail.assertions >= tres && (
         <p data-testid="feedback-text">Well Done!</p>
       )}
+      <button
+        data-testid="btn-ranking"
+        type="button"
+        onClick={ () => {
+          history.push('/ranking');
+        } }
+      >
+        Ranking
+      </button>
     </header>
   );
 }
