@@ -1,12 +1,23 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logout } from '../redux/actions';
 
 const tres = 3;
 
-function Feedback({ headerDetail }) {
+function Feedback({ headerDetail, login }) {
+  const [redirectLogin, setRedirectLogin] = useState(false);
+  const history = useHistory();
+
+  function handleClickPlayAgain() {
+    login();
+    setRedirectLogin(true);
+  }
   return (
     <header>
+      { redirectLogin && history.push('/') }
       <img
         data-testid="header-profile-picture"
         src={ `https://www.gravatar.com/avatar/${headerDetail.gravatarEmail}` }
@@ -38,6 +49,13 @@ function Feedback({ headerDetail }) {
       {headerDetail.assertions >= tres && (
         <p data-testid="feedback-text">Well Done!</p>
       )}
+      <button
+        type="button"
+        data-testid="btn-play-again"
+        onClick={ handleClickPlayAgain }
+      >
+        Play Again
+      </button>
     </header>
   );
 }
@@ -49,10 +67,15 @@ Feedback.propTypes = {
     score: PropTypes.number,
     gravatarEmail: PropTypes.string,
   }),
+  login: PropTypes.func.isRequired,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
   headerDetail: state.player,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  login: () => dispatch(logout()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
