@@ -18,16 +18,20 @@ function Feedback({ headerDetail }) {
       >
         {headerDetail.name}
       </h5>
-      <p
-        data-testid="header-score"
-      >
-        {headerDetail.score}
-      </p>
-      <p
-        data-testid="feedback-total-question"
-      >
-        {Number(headerDetail.assertions)}
-      </p>
+      <section data-testid="feedback-total-score">
+        <p
+          data-testid="header-score"
+        >
+          {Number(headerDetail.score)}
+        </p>
+      </section>
+      <section data-testid="feedback-total-question">
+        <p
+          data-testid="header-assertions"
+        >
+          {Number(headerDetail.assertions)}
+        </p>
+      </section>
       {headerDetail.assertions < tres && (
         <p data-testid="feedback-text">Could be better...</p>
       )}
